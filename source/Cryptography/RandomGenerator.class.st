@@ -87,8 +87,8 @@ RandomGenerator class >> unpredictableStringsDo: aBlock [
 	time := Time millisecondsToRun:
 		[ aBlock
 			value: World imageForm bits compressToByteArray ;
-			value: Sensor mousePoint x asString ;
-			value: Sensor mousePoint y asString ;
+			value: World activeHand position x asString ;
+			value: World activeHand position y asString ;
 			value: Time millisecondClockValue asByteArray ;
 			value: Date today asString ;
 			value: Time now asString ;
@@ -100,7 +100,7 @@ RandomGenerator class >> unpredictableStringsDo: aBlock [
 	aBlock 
 		value: time asByteArray;
 		"maybe the pointer has moved, hit it again."
-		value: Sensor mousePoint asString ;
+		value: World activeHand position asString ;
 		value: Time millisecondClockValue asByteArray
 
 ]
