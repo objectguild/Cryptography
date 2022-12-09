@@ -93,27 +93,19 @@ ByteArray >> uint: bits at: anInteger [
 	bits == 56 ifTrue: [ ^ self unsigned56At: anInteger ].
 	bits == 48 ifTrue: [ ^ self unsigned48At: anInteger ].
 	bits == 40 ifTrue: [ ^ self unsigned40At: anInteger ].
-	bits == 32
-		ifTrue:
-			[ ^ self
-				unsignedLongAt: anInteger
-				bigEndian: false ].
-	bits == 16
-		ifTrue:
-			[ ^ self
-				unsignedShortAt: anInteger
-				bigEndian: false ].
-	bits == 8 
-		ifTrue:
-			[ ^ self byteAt: anInteger ].
+	bits == 32 ifTrue: [
+		^ self unsignedLongAt: anInteger bigEndian: false ].
+	bits == 16 ifTrue: [
+		^ self unsignedShortAt: anInteger bigEndian: false ].
+	bits == 8 ifTrue: [
+		^ self byteAt: anInteger ].
 	bytes := bits // 8.
 	answer := LargePositiveInteger new: bytes.
-	1 to: bytes do:
-		[ :digitPosition |
+	1 to: bytes do: [ :digitPosition |
 		answer
-			digitAt: digitPosition
+			byteAt: digitPosition
 			put: (self at: digitPosition + anInteger - 1) ].
-	^answer normalize
+	^ answer normalize
 ]
 
 { #category : #'*cryptography-core' }
@@ -121,11 +113,10 @@ ByteArray >> uint: bits at: position put: anInteger [
 
 	position
 		to: position + (bits // 8) - 1
-		do:
-			[ :pos |
+		do: [ :pos |
 			self
 				at: pos
-				put: (anInteger digitAt: pos-position+1) ].
+				put: (anInteger byteAt: pos - position + 1) ].
 	^ anInteger
 ]
 
